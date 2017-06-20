@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<link href="../../../resources/css/bootstrap.min.css" rel="stylesheet"
+	media="screen" th:href="@{/resources/css/bootstrap.min.css}" />
+<link href="../../../resources/css/bootstrap.css" rel="stylesheet"
+	media="screen" th:href="@{/resources/css/bootstrap.css}" />
+<link rel="stylesheet" media="screen" th:href="@{/css/core.css}" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"></link>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<nav class="navbar-inverse navbar-default navbar-fixed-top"
+		th:fragment="header">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target="#navbar-collapse">
+					<span class="icon-bar"></span><span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a id="home" class="navbar-brand" href="#" th:href="@{/}"><span class="fa fa-futbol-o" style="font-size:24px"></span>&nbsp;FootballTrainings</a>
+				
+			</div>
+
+			<div class="collapse navbar-collapse" id="navbar-collapse">
+			<ul class="nav navbar-nav navbar-right">
+			
+				<li><a href="/exercise/allExercises" th:href="@{/exercise/allExercises}">&nbsp;Exercises&nbsp;&nbsp;</a></li>
+				
+				<li><a href="/document/allForms" th:href="@{/document/allForms}">&nbsp;Forms&nbsp;&nbsp;</a></li>
+				
+				<li><a href="/document/allArticles" th:href="@{/document/allArticles}">&nbsp;Articles&nbsp;&nbsp;</a></li>
+				
+				<li><a href="/document/allVideos" th:href="@{/video/allVideos}">&nbsp;Videos&nbsp;&nbsp;</a></li>
+
+				<li th:if="${#authorization.expression('!isAuthenticated()')}">
+					<a href="/signin" th:href="@{/signin}"> <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;Sign In</a>
+				</li>
+				
+				<li th:if="${#authorization.expression('isAuthenticated()')}">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;
+					<span th:id="${user.userName}" th:text="${user.userName}"></span></a>
+					<ul id="dropdown-menu" class="dropdown-menu" role="menu">
+							
+							<li><a id="create-exercise" href="/exercise/createExercise"
+								th:href="@{/exercise/createExercise}" onclick="$('#form').submit();"> <span
+									class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Create exercise
+							</a></li>
+							
+							<li class="divider"></li>
+							
+							<li><a id="upload-document" href="/document/uploadDocument"
+								th:href="@{/document/uploadDocument}" onclick="$('#form').submit();"> <span
+									class="glyphicon glyphicon-upload" aria-hidden="true"></span>&nbsp;Upload document
+							</a></li>
+							
+							<li class="divider"></li>
+							
+							<li><a id="upload-video" href="/video/uploadVideo"
+								th:href="@{/video/uploadVideo}" onclick="$('#form').submit();"> <span
+									class="glyphicon glyphicon-upload" aria-hidden="true"></span>&nbsp;Upload video
+							</a></li>
+							
+							<li class="divider"></li>
+							
+							<li><a id="myexercises"
+								th:href="@{/exercise/userExercises/{userName}(userName=${user.userName})}" onclick="$('#form').submit();"> <span
+									class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;My exercises
+							</a></li>
+							
+							<li class="divider"></li>
+							
+							<li><a id="myforms"
+								th:href="@{/document/userForms/{userName}(userName=${user.userName})}" onclick="$('#form').submit();"> <span
+									class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;My forms
+							</a></li>
+							
+							<li class="divider"></li>
+							
+							<li><a id="myarticles"
+								th:href="@{/document/userArticles/{userName}(userName=${user.userName})}" onclick="$('#form').submit();"> <span
+									class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;My articles
+							</a></li>
+							
+							<li class="divider"></li>
+							
+							<li><a id="myvideos"
+								th:href="@{/video/userVideos/{userName}(userName=${user.userName})}" onclick="$('#form').submit();"> <span
+									class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>&nbsp;My videos
+							</a></li>
+							
+							<li class="divider"></li>
+							
+							<li><a id="configuration" href="/user/configuration"
+								th:href="@{/user/configuration}"
+								onclick="$('#form').submit();"> <span
+									class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;Configuration
+							</a></li>
+
+							<li class="divider"></li>
+							
+							<li><a href="/logout" th:href="@{#}" onclick="$('#form').submit();"> 
+									<span class="glyphicon glyphicon-log-out" 
+									aria-hidden="true"></span>&nbsp;Log out</a>
+								<form style="visibility: hidden" id="form" method="post"
+									action="#" th:action="@{/logout}"></form>
+							</li>
+
+						</ul>
+				</li>
+				
+			</ul>
+			</div>
+		</div>
+	</nav>
+</body>
+</html>

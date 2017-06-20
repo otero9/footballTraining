@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Select image</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" media="screen"
+	th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" media="screen" th:href="@{/css/core.css}" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"></link>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:inline="javascript" type="text/javascript">
+	var selectedImage = null;
+	var exerciseId = [[${exerciseId}]];
+	
+	function btn_cancel() {
+		window.location = "/footballtraining/";
+	}
+	
+	window.onload = function() {
+		selectedImage = 'blanco';
+		document.getElementById('blanco').style.border = "6px solid #00d0ff";
+	}
+	
+	function selectImage(img){
+		selectedImage = img;
+		document.getElementById(img).style.border = "6px solid #00d0ff";
+		
+		if (img!='blanco'){
+			document.getElementById('blanco').style.border = "1px solid #000000";
+		}
+		
+		if (img!='medioCampo1'){
+			document.getElementById('medioCampo1').style.border = "";
+		}
+		
+		if (img!='medioCampo2'){
+			document.getElementById('medioCampo2').style.border = "";
+		}
+		
+		if (img!='campoEntero'){
+			document.getElementById('campoEntero').style.border = "";
+		}
+	}
+	function next(){
+		var urlPost = "/footballtraining/graphic/createGraphic/" + exerciseId + "/" + selectedImage;
+		window.location = urlPost;
+	}
+</script>
+</head>
+<body>
+
+	<div th:replace="fragments/header :: header">&nbsp;</div>
+	<div class="container">
+		<br></br>
+		<form id="form" class="form-narrow form-horizontal" method="post"
+			th:action="@{/graphic/selectGraphicImage}"
+			th:object="${selectGraphicImageForm}" enctype="multipart/form-data">
+			<!--/* Show general error message when form contains errors */-->
+			<th:block th:if="${#fields.hasErrors('${selectGraphicImageForm.*}')}">
+				<div
+					th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
+			</th:block>
+			<fieldset>
+
+				<legend>Select background graphic image</legend>
+				<br></br> <img src="../../img/background/blanco.png" id="blanco" onclick="selectImage('blanco')"
+					style="width: 200px; height: 200px; border: 1px solid #000000; border-radius: 15px" draggable="false"></img>
+				&nbsp;&nbsp;&nbsp;&nbsp; <img
+					src="../../img/background/medioCampo2.png" id="medioCampo2" onclick="selectImage('medioCampo2')"
+					style="width: 200px; height: 200px; border-radius: 15px" draggable="false"></img> <br></br>
+				<br></br> <br></br>  <img
+					src="../../img/background/campoEntero.png" id="campoEntero" onclick="selectImage('campoEntero')"
+					style="width: 200px; height: 200px; border-radius: 15px" draggable="false"></img>
+				&nbsp;&nbsp;&nbsp;&nbsp; <img
+					src="../../img/background/medioCampo1.png" id="medioCampo1" onclick="selectImage('medioCampo1')"
+					style="width: 200px; height: 200px; border-radius: 15px" draggable="false"></img> <br></br>
+				<br></br> <br></br>
+				<div class="form-group col-md-12">
+					<div class="col-md-offset-4">
+						<button type="button" onclick="btn_cancel()"
+							class="btn btn-danger">Cancel</button>
+							&nbsp;&nbsp;
+						<button id="submit-createExercise" type="button" onclick="next()"
+							class="btn btn-success">&nbsp;Next&nbsp;</button>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+
+</body>
+</html>

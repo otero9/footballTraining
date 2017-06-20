@@ -1,0 +1,12 @@
+.element-table:hover { 
+    background-color: #dadada;
+    cursor: pointer;
+}
+#download {
+	    cursor:pointer;
+	    color:#0a0808;
+	    padding:3px;
+}
+#download:hover {
+	    color:#1d0ae7;
+}

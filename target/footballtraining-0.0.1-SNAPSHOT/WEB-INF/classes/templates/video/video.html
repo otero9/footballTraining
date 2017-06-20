@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	class="cookie_used_false js pc js">
+
+<head>
+<title>Video</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" media="screen"
+	th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" media="screen" th:href="@{/css/core.css}" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"></link>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<link rel="stylesheet" media="screen" th:href="@{/css/star-rating.css}" />
+<link rel="stylesheet" media="screen"
+	th:href="@{/css/star-rating.min.css}" />
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script th:src="@{/js/star-rating.js}"></script>
+<script th:src="@{/js/star-rating.min.js}"></script>
+<style>
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+*:before, *:after {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.clearfix {
+	clear: both;
+}
+
+pre {
+	display: block;
+	padding: 9.5px;
+	margin: 0 0 10px;
+	font-size: 13px;
+	line-height: 1.42857143;
+	color: #333;
+	word-break: break-all;
+	word-wrap: break-word;
+	background-color: #F5F5F5;
+	border: 1px solid #CCC;
+	border-radius: 4px;
+}
+
+/* Rating Star Widgets Style */
+.rating-stars ul {
+	list-style-type: none;
+	padding: 0;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+}
+
+.rating-stars ul>li.star {
+	display: inline-block;
+}
+
+/* Idle State of the stars */
+.rating-stars ul>li.star>i.fa {
+	font-size: 2em; /* Change the size of the stars */
+	color: #ccc; /* Color on idle state */
+}
+
+/* Hover state of the stars */
+.rating-stars ul>li.star.hover>i.fa {
+	color: black;
+}
+
+/* Selected state of the stars */
+.rating-stars ul>li.star.selected>i.fa {
+	color: black;
+}
+</style>
+<script th:inline="javascript" type="text/javascript">
+	//<![CDATA[
+	$(document)
+			.ready(
+					function() {
+						$('#stars li').on('mouseover', function() {
+							var onStar = parseInt($(this).data('value'), 10);
+							$(this).parent().children('li.star').each(
+
+							function(e) {
+								if (e < onStar) {
+									$(this).addClass('hover');
+								} else {
+									$(this).removeClass('hover');
+								}
+							});
+
+						}).on(
+								'mouseout',
+								function() {
+									$(this).parent().children('li.star').each(
+											function(e) {
+												$(this).removeClass('hover');
+											});
+								});
+						$('#stars li')
+								.on(
+										'click',
+										function() {
+											var onStar = parseInt($(this).data(
+													'value'), 10);
+											var stars = $(this).parent()
+													.children('li.star');
+
+											for (i = 0; i < stars.length; i++) {
+												$(stars[i]).removeClass(
+														'selected');
+											}
+
+											for (i = 0; i < onStar; i++) {
+												$(stars[i])
+														.addClass('selected');
+											}
+
+											var ratingValue = parseInt($(
+													'#stars li.selected')
+													.last().data('value'), 10);
+											var msg = "";
+											if (ratingValue > 1) {
+												msg = "Thanks! You rated this "
+														+ ratingValue
+														+ " stars.";
+											} else {
+												msg = "We will improve ourselves. You rated this "
+														+ ratingValue
+														+ " stars.";
+											}
+											responseMessage(msg,ratingValue);
+
+										});
+
+					});
+
+	function responseMessage(msg,value) {
+		var videoId = [[${video.videoId}]];
+		var urlPost = "http://localhost:8080/footballtraining/valorateVideo/" + videoId + "/" + value;
+		if (videoId != null){
+			   $.ajax({
+				      type: "POST",
+				      contentType : 'application/json; charset=utf-8',
+				      dataType : 'json',
+				      url: urlPost,
+				      complete : function(result) {
+				    	  window.location.reload(result);
+				     }
+				  });
+		}
+	}
+	//]]>
+</script>
+</head>
+<body>
+	<div th:replace="fragments/header :: header">&nbsp;</div>
+	<div class="container">
+		<div class="text-center" id="video" th:object="${video}">
+			<div class="row">
+				<div class=" col-md-6 col-md-offset-3">
+					<br></br>
+					<div class="panel panel-grey">
+						<h1>
+							<span th:text="${video.videoTitle}"></span>
+						</h1>
+						<br></br> <span th:if="${video.valorationVideo > 0.5}"
+							class="glyphicon glyphicon-star" aria-hidden="true"></span> <span
+							th:if="${video.valorationVideo > 1.5}"
+							class="glyphicon glyphicon-star" aria-hidden="true"></span> <span
+							th:if="${video.valorationVideo > 2.5}"
+							class="glyphicon glyphicon-star" aria-hidden="true"></span> <span
+							th:if="${video.valorationVideo > 3.5}"
+							class="glyphicon glyphicon-star" aria-hidden="true"></span> <span
+							th:if="${video.valorationVideo > 4.5}"
+							class="glyphicon glyphicon-star" aria-hidden="true"></span> <br></br>
+						<div th:if="${video.valorationCountVideo > 0}">
+							<i class="fa fa-users" aria-hidden="true"></i>&nbsp; <span
+								th:text="${video.valorationCountVideo}" aria-hidden="true"></span>
+						</div>
+						<br></br>
+						<div class="embed-responsive embed-responsive-16by9">
+							<iframe class="embed-responsive-item" style="border: 1;"
+								width="500" height="270" th:src="${video.videoURL}"
+								allowfullscreen="true" mozallowfullscreen="true"
+								webkitallowfullscreen="true"></iframe>
+						</div>
+						<br></br>
+						<div class="text-left">
+							<div th:if="${video.videoDescription}">
+								<br></br> <span th:text-align="left">&nbsp;&nbsp;<b>Description</b>:&nbsp;
+								</span> <span th:text="${video.videoDescription}"></span>
+								<br></br> <br></br>
+							</div>
+						</div>
+						<div class="text-center">
+								<a href="details.html"
+									th:href="@{/user/{id}/details(id=${video.user.userId})}"> <span
+									class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;
+									<span th:id="${video.user.userName}"
+									th:text="${video.user.userName}"></span>
+								</a> <br></br> <br></br>
+						</div>
+						<br></br> 
+
+						<div class="text-center">
+							<div id="stars" th:if="${notVoted}">
+								<h6>Rate this video!</h6>
+								<br></br>
+								<section class='rating-widget'>
+									<!-- Rating Stars Box -->
+									<div class='rating-stars text-center'>
+										<ul id='stars'>
+											<li class='star' title='Poor' data-value='1'><i
+												class='fa fa-star fa-fw'></i></li>
+											<li class='star' title='Fair' data-value='2'><i
+												class='fa fa-star fa-fw'></i></li>
+											<li class='star' title='Good' data-value='3'><i
+												class='fa fa-star fa-fw'></i></li>
+											<li class='star' title='Excellent' data-value='4'><i
+												class='fa fa-star fa-fw'></i></li>
+											<li class='star' title='WOW!!!' data-value='5'><i
+												class='fa fa-star fa-fw'></i></li>
+										</ul>
+									</div>
+								</section>
+							</div>
+							<div id="success" th:if="${voted}">
+								<div class="alert alert-success">You have voted this video</div>
+							</div>
+						</div>
+						<br></br> <br></br>
+						<form method="post"
+							th:action="@{/video/deleteVideo/{id}(id=${video.videoId})}">
+							<div class="text-center">
+								<br></br>
+								<button id="deleteVideo"
+									th:if="${user} and ((${user.userId}==${video.user.userId}) or ${isOwner})"
+									type="submit" class="btn btn-danger">
+									<span class="glyphicon glyphicon-trash">&nbsp;Remove
+										Video</span>
+								</button>
+							</div>
+						</form>
+						<br></br>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Upload Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" media="screen"
+	th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" media="screen" th:href="@{/css/core.css}" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"></link>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script>
+	function btn_cancel() {
+		window.location = "/footballtraining/";
+	}
+</script>
+</head>
+<body>
+
+	<div th:replace="fragments/header :: header">&nbsp;</div>
+	<div class="container">
+
+		<br></br>
+		<form id="form" class="form-narrow form-horizontal" method="post"
+			th:action="@{/document/uploadDocument}"
+			th:object="${uploadDocumentForm}" enctype="multipart/form-data">
+			<!--/* Show general error message when form contains errors */-->
+			<th:block th:if="${#fields.hasErrors('${uploadDocumentForm.*}')}">
+				<div
+					th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
+			</th:block>
+			<br></br>
+			<fieldset>
+				<legend>Upload Document</legend>
+				<br></br>
+
+				<div class="form-group">
+					<label for="documentType" class="col-lg-1 control-label">Type</label>
+					<br></br> <br></br>
+					<div class="col-lg-12">
+						<select class="form-control" id="documentType"
+							th:field="*{documentType}">
+							<option th:value="Form">Form</option>
+							<option th:value="Article">Article</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group"
+					th:classappend="${#fields.hasErrors('documentTitle')}? 'has-error'">
+					<label for="documentTitle" class="col-lg-1 control-label">Title</label>
+					<br></br> <br></br>
+					<div class="col-lg-12">
+						<input type="text" class="form-control" id="documentTitle"
+							placeholder="documentTitle" th:field="*{documentTitle}" /> <span
+							class="help-block" th:if="${#fields.hasErrors('documentTitle')}"
+							th:errors="*{documentTitle}">Incorrect title</span>
+					</div>
+				</div>
+
+				<div class="form-group"
+					th:classappend="${#fields.hasErrors('documentDescription')}? 'has-error'">
+					<label for="documentDescription" class="col-lg-2 control-label">Description</label>
+					<br></br> <br></br>
+					<div class="col-lg-12">
+						<textarea class="form-control" id="documentDescription"
+							placeholder="documentDescription"
+							th:field="*{documentDescription}"></textarea>
+						<span class="help-block"
+							th:if="${#fields.hasErrors('documentDescription')}"
+							th:errors="*{documentDescription}">Incorrect description</span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="documentFile" class="col-lg-3 control-label">Choose
+						file</label> <br></br> <br></br>
+					<div class="col-lg-12">
+						<input id="documentFile" class="form-control" type="file"
+							name="file" /><br /> <br />
+					</div>
+				</div>
+
+				<div class="form-group col-md-12">
+					<div class="col-md-offset-3">
+						<button type="button" onclick="btn_cancel()"
+							class="btn btn-danger">Cancel</button>
+						<button id="submit-uploadDocument" type="submit"
+							class="btn btn-primary">
+							<span class="glyphicon glyphicon-upload"></span>&nbsp;Upload
+							document
+						</button>
+					</div>
+				</div>
+
+			</fieldset>
+
+		</form>
+
+		<div th:replace="fragments/footer :: footer">&nbsp;</div>
+	</div>
+</body>
+</html>
