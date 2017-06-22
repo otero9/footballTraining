@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: footballtraining.app.model.user.UserServiceTest
--------------------------------------------------------------------------------
-Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 11.098 sec - in footballtraining.app.model.user.UserServiceTest
